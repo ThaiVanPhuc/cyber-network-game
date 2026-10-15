@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Trò chơi An ninh mạng</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <h1>Trò chơi: An ninh mạng</h1>
+      <p>Học thông qua thuyết trình và mini-game tương tác</p>
+    </header>
+
+    <main>
+      <section id="start-screen" class="panel active">
+        <div class="card">
+          <h2>Chọn chủ đề</h2>
+          <div id="categories" class="categories"></div>
+
+          <div class="settings">
+            <label>
+              Số câu:
+              <select id="num-questions">
+                <option>5</option>
+                <option selected>10</option>
+                <option>15</option>
+              </select>
+            </label>
+
+            <label>
+              Chế độ:
+              <select id="mode">
+                <option value="normal" selected>Hiển thị đáp án sau khi chọn</option>
+                <option value="hard">Khó: không hiện đáp án ngay</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="controls">
+            <button id="btn-start" class="btn primary">Bắt đầu</button>
+            <button id="btn-high" class="btn">Xem điểm cao</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="presentation-screen" class="panel">
+        <div class="card slide-card">
+          <div id="slide-content"></div>
+
+          <div class="controls">
+            <button id="btn-prev-slide" class="btn">Quay lại</button>
+            <button id="btn-next-slide" class="btn primary">Tiếp theo</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="quiz-screen" class="panel">
+        <div class="card">
+          <div class="row top-row">
+            <div>
+              <span id="q-index">1</span>/<span id="q-total">10</span>
+              <span id="category-badge" class="badge"></span>
+            </div>
+            <div class="score-box">
+              Điểm: <strong id="score">0</strong>
+            </div>
+          </div>
+
+          <div class="question-wrap">
+            <h3 id="question-text">Câu hỏi</h3>
+            <div id="choices" class="choices"></div>
+            <div id="feedback" class="feedback"></div>
+          </div>
+
+          <div class="controls">
+            <button id="btn-prev-quiz" class="btn">Quay lại</button>
+            <button id="btn-confirm" class="btn primary">Xác nhận</button>
+            <button id="btn-skip" class="btn">Bỏ qua</button>
+          </div>
+
+          <div class="progress">
+            <div id="progress-bar" class="progress-bar"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="spot-screen" class="panel">
+        <div class="card">
+          <h2>Tìm lỗ hổng</h2>
+          <p class="muted">Nhấp vào điểm bạn cho là nguy hiểm / có rủi ro</p>
+
+          <div class="spot-area">
+            <svg viewBox="0 0 820 420" class="scene">
+              <rect width="820" height="420" fill="#edf4fb"/>
+              <rect x="70" y="90" width="250" height="150" fill="#ffffff" stroke="#dbe6f0"/>
+              <rect x="480" y="90" width="220" height="150" fill="#ffffff" stroke="#dbe6f0"/>
+              <rect x="120" y="140" width="120" height="60" fill="#111827" rx="8"/>
+              <rect x="520" y="120" width="38" height="80" fill="#22c55e" rx="8"/>
+              <rect x="250" y="240" width="90" height="55" fill="#facc15" rx="4"/>
+              <text x="265" y="270" font-size="12">pw:1234</text>
+              <rect x="170" y="120" width="130" height="10" fill="#d9e2ec"/>
+              <rect x="520" y="190" width="60" height="10" fill="#d9e2ec"/>
+            </svg>
+
+            <button class="hotspot" data-id="laptop" style="left:195px; top:180px;" title="Laptop"></button>
+            <button class="hotspot" data-id="phone" style="left:538px; top:167px;" title="Phone"></button>
+            <button class="hotspot" data-id="note" style="left:296px; top:285px;" title="Sticky Note"></button>
+          </div>
+
+          <div id="spot-feedback" class="feedback"></div>
+
+          <div class="controls">
+            <button id="btn-spot-next" class="btn primary">Tiếp tục</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="password-screen" class="panel">
+        <div class="card">
+          <h2>Kiểm tra mật khẩu</h2>
+          <p class="muted">Nhập mật khẩu để xem mật khẩu mạnh hay yếu</p>
+
+          <input id="password-input" type="text" placeholder="Nhập mật khẩu..." />
+
+          <div class="meter">
+            <div id="pwd-bar" class="pwd-bar"></div>
+          </div>
+
+          <p id="pwd-msg" class="hint">Mật khẩu của bạn ...</p>
+
+          <div class="controls">
+            <button id="btn-password-next" class="btn primary">Tiếp tục</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="phish-screen" class="panel">
+        <div class="card">
+          <h2>Email nghi ngờ</h2>
+
+          <div class="email-box">
+            <div class="email-head">Từ: it-support@company.example</div>
+            <div class="email-head">Tiêu đề: Khôi phục tài khoản ngay</div>
+            <p>Hệ thống của bạn đang hoạt động bất thường. Hãy nhấn vào liên kết để xác minh ngay để tránh khóa tài khoản.</p>
+            <p class="link-danger">https://company-support.example/confirm</p>
+          </div>
+
+          <div class="controls">
+            <button id="btn-open-link" class="btn warn">Mở liên kết</button>
+            <button id="btn-report-phish" class="btn primary">Báo cáo / Không mở</button>
+          </div>
+
+          <div id="phish-feedback" class="feedback"></div>
+        </div>
+      </section>
+
+      <section id="end-screen" class="panel">
+        <div class="card">
+          <h2>Kết quả cuối cùng</h2>
+          <p id="end-summary"></p>
+          <div id="end-score" class="score-large">0</div>
+
+          <div class="controls">
+            <button id="btn-restart" class="btn">Chơi lại</button>
+            <button id="btn-review" class="btn">Xem đáp án</button>
+            <button id="btn-save" class="btn primary">Lưu điểm</button>
+          </div>
+
+          <div id="save-area" class="save-area" hidden>
+            <input id="player-name" type="text" maxlength="20" placeholder="Tên của bạn" />
+            <button id="btn-save-confirm" class="btn primary">Lưu</button>
+          </div>
+
+          <div id="review-list" class="review-list"></div>
+        </div>
+      </section>
+
+      <section id="highscreen" class="panel">
+        <div class="card">
+          <h2>Điểm cao</h2>
+          <ol id="high-list" class="high-list"></ol>
+          <div class="controls">
+            <button id="btn-clear-high" class="btn warn">Xóa điểm cao</button>
+            <button id="btn-back-start" class="btn">Quay lại</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Được xây dựng cho mục tiêu giáo dục an ninh mạng</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
